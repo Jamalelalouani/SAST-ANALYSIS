@@ -1,7 +1,6 @@
 import sqlite3
 import libuser
 
-
 def login(username, password):
 
     conn = sqlite3.connect('db_users.sqlite')
@@ -9,12 +8,14 @@ def login(username, password):
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
-    user = c.execute("SELECT * FROM users WHERE username = '{}' and password = '{}'".format(username, password)).fetchone()
+    c.execute("SELECT * FROM users WHERE username = ? and password = ?", (username, password))
+    user = c.fetchone()
 
     if user:
         return user['username']
     else:
         return False
+
 
 
 def create(username, password):
